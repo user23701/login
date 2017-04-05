@@ -7,7 +7,7 @@
    * register.php
    * logout.php
    
-   CSS:
-    * css.css
-    * main.css
-    * tooltip.css
+  CSS:
+   * css.css
+   * main.css
+   * tooltip.css
