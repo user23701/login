@@ -1,12 +1,13 @@
 <?php
 session_start();
 
-// session cookie laufzeit verlängern, wenn "eingeloggt bleiben" aktiviert ist
+// Die Laufzeit des Session Cookies wird verlängert, wenn "Eingeloggt bleiben" gecheckt ist
 if(isset($_POST["angemeldetbleiben"])) {
-  $lifetime=31536000; // ein jahr
-session_reset();    // session wird 'neugestartet'
-setcookie(session_name(),session_id(),time()+$lifetime);  // session cookie wird aktualisiert mit ein jahr laufzeit
+  $lifetime=31536000; // Lifetime wird auf ein Jahr gesetzt
+session_reset();    // Die Session wird resetet
+setcookie(session_name(),session_id(),time()+$lifetime);  // Der Session Cookie wird neu gesetzt (nun mit einem Jahr Laufzeit)
 }
+
 /*
 if(isset($_COOKIE["login"])) {
   $form_is_submitted = true;
@@ -16,77 +17,77 @@ if(isset($_COOKIE["login"])) {
 */
 
 
-if(isset($_POST['neuernutzer'])){             // wenn registrieren button geklickt auf register seite leiten
+if(isset($_POST['neuernutzer'])){             // Redirect bei Klick  auf Registrieren Button
   header('location: register.php');
   exit();
 }
 
-$form_is_submitted = false;                   // variable wird gesetzt
-$fehler = false;                                // variable wird gesetzt
+$form_is_submitted = false;                   // Variable wird gesetzt
+$fehler = false;                                // Variable wird gesetzt
 
-if (isset($_POST['username']) && $_POST['password'] != "") {            // überprüfen, ob boxen ausgefüllt wurden
-        $form_is_submitted = true;                                           //variable=  felder ausgefüllt
+if (isset($_POST['username']) && $_POST['password'] != "") {            // Überprüfung, ob Felder ausgefüllt wurden
+        $form_is_submitted = true;                                           // Variablensetzung, wenn Felder ausgefüllt sind
 }
 
-if($form_is_submitted === true){                                     // wenn form ausgefüllt
+if($form_is_submitted === true){                                     // Wenn die Form ausgefüllt wurde
 
-	$handle = fopen('name.txt','r');                                              //datei öffnen
+	$handle = fopen('name.txt','r');                                              // Datei wird geöffnet
             	if($handle === false){
-            		$fehler = true;                                        // wenn nicht möglich zu öffnen fehler = true
+            		$fehler = true;                                        // Wenn dies nicht möglich, fehler = true
             	}else{
-            		while(!feof($handle)){                                        // while schleife starten um jede zeile durchzugehen
-            	    	$line = fgets($handle);                                   // öffnen
-            	        $data = explode(',',$line);                              // bei komma trennen
-            	        if(empty($line)){                              // wenn zeile leer überspringen
+            		while(!feof($handle)){                                        // While Schleife starten um jede Zeile durchzugehen
+            	    	$line = fgets($handle);                                   // Lines durchgehen
+            	        $data = explode(',',$line);                              // Bei jedem Komma trennen
+            	        if(empty($line)){                              // Wenn eine Zeile leer ist, wird diese übersprungen
             	        	break;
             	        }
                       // user und passwort trennen
-            	        $userName = trim($data[0]);                  //erstes wort username
-            	        $passWord = trim($data[1]);                    // zweites wort passwort
+            	        $userName = trim($data[0]);                  // Erstes Wort wird als username deklariert
+            	        $passWord = trim($data[1]);                    // Zweites Wort wird als passwort deklariert
 
 
-            	        if( $userName === $_POST['username'] &&  $passWord === $_POST['password']){  // überprüfen ob übereinstimmt
-            	        	$fehler = false;                                                    // wenn ja kein fehler
+            	        if( $userName === $_POST['username'] &&  $passWord === $_POST['password']){  // Überprüfen ob Nutzername und Passwort übereinstimmen
+            	        	$fehler = false;                                                    // Wenn ja, fehler = false
             	        	break;
             	        }else{
-            	        	$fehler = true;                                                 // wenn nein = fehler
+            	        	$fehler = true;                                                 // Wenn nein, fehler = true
             	       	}
             	     }
             	 }
   fclose($handle);
 
-	if($fehler === true && $_POST['username']!=="" && $_POST['password']!==""){        // wenn fehler nachricht
-    echo '<script language="javascript">';																					// javascript alert - "falscher benutzer"
+	if($fehler === true && $_POST['username']!=="" && $_POST['password']!==""){        // Wenn es einen Fehler gibt, wird Nachricht gezeigt
+    echo '<script language="javascript">';																					// Javascript Alert: "falscher benutzer"
     echo 'alert("Das Passwort oder der Username ist falsch!")';
     echo '</script>';
-    die("<script>location.href = '/~user/'</script>");															// auf "startseite" leiten
+    die("<script>location.href = '/~user/'</script>");															// Redirect auf Login Page
     exit;
 	}
 }
 
-if ($form_is_submitted === true && $fehler === false) {         // prüfen ob keine fehler da sind
-  $usernameEingabeErfolgreich = $_POST['username'];           // namen als variable
-  $nameGroß =  ucfirst($usernameEingabeErfolgreich);          // erster buchstabe von name groß, für main.php
-//  $login = "login_accepted";                             // inhalt anzeigen (per javascript) [alt]
-	$_SESSION['login'] = true;                               // session "login" wird aktiviert
-  $_SESSION["username"] = $nameGroß;                        // username wird als session variable gesetzt
-  header('location: main.php');                               // weiterleiten
+if ($form_is_submitted === true && $fehler === false) {         // Prüfung, ob es keine Fehler gibt
+  $usernameEingabeErfolgreich = $_POST['username'];           // Name, von dem eingeloggten Benutzer, wird als Variable gesetzt
+  $nameGroß =  ucfirst($usernameEingabeErfolgreich);          // Erster Buchstabe des Names groß, für main.php
+//  $login = "login_accepted";                             // Inhalt anzeigen (per Javascript) [alt]
+	$_SESSION['login'] = true;                               // Session "login" wird gestartet
+  $_SESSION["username"] = $nameGroß;                        // Username wird als Session Variable gesetzt
+  header('location: main.php');                               // Redirect auf main.php
   exit();
 } else {
-    if ($fehler === true) {                                              // wenn fehler gefunden wurden
-      echo '<script language="javascript">';																					// javascript alert - "erneut anmelden"
+    if ($fehler === true) {                                              // Wenn Fehler gefunden wurden
+      echo '<script language="javascript">';																					// Javascript Alert: "erneut anmelden"
       echo 'alert("Bitte erneut anmelden!")';
       echo '</script>';
-      die("<script>location.href = '/~user/'</script>");															// auf "startseite" leiten
+      die("<script>location.href = '/~user/'</script>");															//  Redirect auf "Login Page"
       exit;
 		}
   }
 
-  if(isset($_SESSION['login'])){            // weiterleiten wenn login session aktiv
+  if(isset($_SESSION['login'])){            // Redirect auf main.php, wenn Session aktiv ist
    header('location: main.php');
     exit();
   }
-  if ($form_is_submitted === false){              // wenn form nicht ausgefüllt session zerstören
+  if ($form_is_submitted === false){              // Wenn die Form nicht ausgefüllt wurde, die Session beenden
     session_destroy();
   }
 

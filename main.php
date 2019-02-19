@@ -3,9 +3,9 @@
 session_start();
 
 /*
-if (!isset($_POST['username'])) {															// wenn keine eingabe javascipt alert anzeigen
+if (!isset($_POST['username'])) {															// Bei keiner Eingabe einen JavaScript Alert anzeigen
   session_destroy();
-  die("<script>location.href = '/~user/'</script>");															// auf "startseite" leiten
+  die("<script>location.href = '/~user/'</script>");															// Redirect auf index.php
    exit;
  }
 */
@@ -29,7 +29,7 @@ if (!isset($_POST['username'])) {															// wenn keine eingabe javascipt 
 
 <?php
 
-if(!isset($_SESSION['login'])){                   // wenn keine session zu startseite gehen
+if(!isset($_SESSION['login'])){                   // Wenn keine Session aktiv ist, redirect auf index.php
   header('location: index.php');
   exit();
 				}

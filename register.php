@@ -48,19 +48,19 @@ if(isset($_POST['submit3'])){
 </form>
 <br>
 <?php
-if (isset($_POST['new_username']) != "") {                // wenn unsername eingegeben
-if($_POST['new_password'] == $_POST['password_confirm']){           // schauen, ob das passwort zwei mal richtig eingegeben wurde
+if (isset($_POST['new_username']) != "") {                // Wenn Username eingegeben wurde
+if($_POST['new_password'] == $_POST['password_confirm']){           // Überprüfen, ob Passwort zweimal richtig eingeben wurde
 
-  $handle = fopen ("name.txt", "a+" );                          // textdatei öffnen
+  $handle = fopen ("name.txt", "a+" );                          // Textdatei öffnen (oder Datenbank)
 
-   fwrite ( $handle, $_POST['new_username'] );                        // username schreiben
-   fwrite ( $handle, "," );                                         // komma schreiben
-   fwrite ( $handle, $_POST['new_password'] );                                    // passwort schreiben
-   fwrite ( $handle, "\n" );                                            //absatz machen
-   fclose ( $handle );                                    //textdatei schließen
+   fwrite ( $handle, $_POST['new_username'] );                        // Usernamen schreiben
+   fwrite ( $handle, "," );                                         // Komma schreiben
+   fwrite ( $handle, $_POST['new_password'] );                                    // Passwort schreiben
+   fwrite ( $handle, "\n" );                                            // Absatz einfügen
+   fclose ( $handle );                                    // Textdatei schließen
    echo "<br><br>";
-   echo "<div id=\"des\" class=\"loader\"></div>";                      // ladebalken anzeigen
- ob_start();                                              // "timer" starten für ladebalken
+   echo "<div id=\"des\" class=\"loader\"></div>";                      // Simulierten Ladebalken zeigen
+ ob_start();                                              // Konstruierten "timer" für den simulierten Ladebalken starten
  $buffer = str_repeat(" ", 4096)."\r\n<span></span>\r\n";
  for ($i=0; $i<1.1; $i++) {
   echo "<p style='font-size: 0px;'>$buffer.$i</p>";
